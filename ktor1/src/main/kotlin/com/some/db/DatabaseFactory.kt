@@ -9,11 +9,14 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.math.RoundingMode
 
 object DatabaseFactory {
-    private const val driverClassName = "org.postgresql.Driver"
-    private const val jdbcURL = "jdbc:postgresql://db:5432/ktorjournal?user=postgres"
     var version: Int = -1; private set
 
-    fun init() = transaction(Database.connect(jdbcURL, driverClassName)) {
+    fun init() = transaction(Database.connect(
+        "jdbc:postgresql://db:5432/appDB",
+        "org.postgresql.Driver",
+        "postgres",
+        "postgres"
+    )) {
         version = db.version.setScale(0, RoundingMode.HALF_UP).toInt()
         SchemaUtils.create(Users)
     }

@@ -6,8 +6,6 @@ const val ID = "id"
 const val NAME = "name"
 const val SURNAME = "surname"
 
-const val VARCHAR_LIMIT = 64
-
 data class User(
     val id: Int,
     val name: String,
@@ -16,7 +14,7 @@ data class User(
 
 object Users : Table() {
     val id = integer(ID).autoIncrement()
-    val name = varchar(NAME, VARCHAR_LIMIT)
-    val surname = varchar(SURNAME, VARCHAR_LIMIT)
+    val name = varchar(NAME, 20)
+    val surname = varchar(SURNAME, 40)
     override val primaryKey = PrimaryKey(id)
 }

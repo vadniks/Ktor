@@ -4,12 +4,12 @@ import com.some.db.DatabaseFactory.dbQuery
 import com.some.models.User
 import com.some.models.Users
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 
 class Repository private constructor() {
+    val version get() = DatabaseFactory.version
 
     private fun resultRowToUser(row: ResultRow) = User(
         row[Users.id],
@@ -26,11 +26,22 @@ class Repository private constructor() {
         it[Users.surname] = surname
     } }
 
-    val version get() = DatabaseFactory.version
+    suspend fun tryAddUser(name: String, surname: String) =
+        if (getUser(name, surname) == null) addUser(name, surname) else Unit
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    suspend fun getUser(name: String, surname: String): User? = dbQuery { Users.select {
+        (Users.name eq name) and (Users.surname eq surname)
+    }.mapLazy(this::resultRowToUser).takeUnless { it.empty() }?.single() }
 
     suspend fun exec(command: String): String = withContext(Dispatchers.IO) {
         Runtime.getRuntime().exec(command)
     }.inputStream.reader().readText()
 
-    companion object { val repository = Repository() }
+    companion object { val repository = Repository().apply { runBlocking {
+        tryAddUser("Alex", "Rover")
+        tryAddUser("Bob", "Marley")
+        tryAddUser("Kate", "Yandson")
+        tryAddUser("Lilo", "Black")
+    } } }
 }

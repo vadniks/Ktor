@@ -3,6 +3,7 @@ val kotlin_version: String by project
 val logback_version: String by project
 val postgresql_version: String by project
 val exposed_version: String by project
+val coroutines_version: String by project
 
 plugins {
     application
@@ -34,4 +35,5 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
 }
