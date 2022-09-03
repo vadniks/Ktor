@@ -1,0 +1,66 @@
+<!DOCTYPE html >
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    <h1>Users:</h1>
+    <div style="
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+    ">
+        <div style="
+            width: 100%;
+            background-color: gray;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        ">
+            <span style="width: 25%">Id</span>
+            <span style="width: 50%">Name</span>
+            <span style="width: 50%">Surname</span>
+        </div>
+    </div>
+    <div
+        th:each="user: ${users}"
+        style="
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid black;
+        ">
+        <div style="
+            width: 100%;
+            background-color: lightgray;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        ">
+            <span style="width: 25%" th:text="${user['id']}"></span>
+            <span style="width: 50%" th:text="${user['name']}"></span>
+            <span style="width: 50%" th:text="${user['surname']}"></span>
+        </div>
+    </div>
+    <h1>System details:</h1>
+    <div style="border: 1px solid black;">
+        <span>PostgreSQL database version: </span><span th:text="${dbVersion}"></span>
+        <br>
+        <span>Operating system information: </span><span th:text="${osInfo}"></span>
+        <br>
+        <span>Java version: </span><span th:text="${javaVersion}"></span>
+        <br>
+        <span>Template engine: Thymeleaf</span>
+        <br>
+        <span>Server information: </span>
+        <span>
+            Ktor with Kotlin 1.7.10
+            Running on Apache Tomcat
+            Accessed on port 8080, database port 5432
+        </span>
+    </div>
+    </body>
+</html>
