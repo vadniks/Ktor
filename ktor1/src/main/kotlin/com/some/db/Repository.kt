@@ -4,7 +4,6 @@ import com.some.db.DatabaseFactory.dbQuery
 import com.some.models.User
 import com.some.models.Users
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 
@@ -38,10 +37,14 @@ class Repository private constructor() {
         Runtime.getRuntime().exec(command)
     }.inputStream.reader().readText()
 
-    companion object { val repository = Repository().apply { runBlocking {
-        tryAddUser("Alex", "Rover")
-        tryAddUser("Bob", "Marley")
-        tryAddUser("Kate", "Yandson")
-        tryAddUser("Lilo", "Black")
-    } } }
+    companion object {
+        private val repository = Repository()
+
+        suspend fun getRepository() = repository.apply {
+            tryAddUser("Alex", "Rover")
+            tryAddUser("Bob", "Marley")
+            tryAddUser("Kate", "Yandson")
+            tryAddUser("Lilo", "Black")
+        }
+    }
 }

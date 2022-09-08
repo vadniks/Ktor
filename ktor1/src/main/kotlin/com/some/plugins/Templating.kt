@@ -1,6 +1,6 @@
 package com.some.plugins
 
-import com.some.db.Repository.Companion.repository
+import com.some.db.Repository.Companion.getRepository
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -22,10 +22,17 @@ fun Application.configureTemplating() {
             call.respond(ThymeleafContent(
                 "index",
                 mapOf(
-                    "users" to repository.getUsers(),
-                    "dbVersion" to repository.version,
-                    "osInfo" to repository.exec("uname -r") + getProperty("os.name") + getProperty("os.version"),
-                    "javaVersion" to getProperty("java.version") + getProperty("java.home")
+                    "users" to getRepository().getUsers(),
+                    "dbVersion" to getRepository().version,
+                    "osInfo" to
+                            getProperty("os.name") + ' '
+                            + getProperty("os.version")
+                            + " username " + getProperty("user.name")
+                            + " working in " + getRepository().exec("pwd"),
+                    "javaVersion" to
+                            getProperty("java.version") + ' '
+                            + getProperty("java.home") + ' '
+                            + getProperty("java.vm.name")
                 )
             ))
         }
