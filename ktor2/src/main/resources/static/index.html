@@ -1,0 +1,26 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Index page</title>
+    </head>
+    <body>
+    <label for="t1input">Task 1 encoded shape params</label>
+    <input
+        id="t1input"
+        type="number"/>
+    <button onclick="window.location.replace(
+        `drawer?encoded=${document.getElementById('t1input').value}`
+    )">Task 1</button>
+    <br>
+    <label for="t2input">Task 2 array for the Shell sort</label>
+    <input
+        id="t2input"
+        type="text"/>
+    <button onclick="window.location.replace(
+        `sort?array=${document.getElementById('t2input').value}`
+    )">Task 2</button>
+    <br>
+    <button onclick="window.location.replace('admin')">Task 3</button>
+    </body>
+</html>
